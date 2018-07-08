@@ -71,7 +71,7 @@ public class BeanProcessorTest extends BaseTestCase {
             return one;
         }
 
-        public void setOne(String one) {
+        public void setOne(final String one) {
             this.one = one;
         }
 
@@ -79,7 +79,7 @@ public class BeanProcessorTest extends BaseTestCase {
             return two;
         }
 
-        public void setTwo(String two) {
+        public void setTwo(final String two) {
             this.two = two;
         }
 
@@ -87,7 +87,7 @@ public class BeanProcessorTest extends BaseTestCase {
             return three;
         }
 
-        public void setThree(String three) {
+        public void setThree(final String three) {
             this.three = three;
         }
 
@@ -95,35 +95,35 @@ public class BeanProcessorTest extends BaseTestCase {
             return four;
         }
 
-        public void setFour(String four) {
+        public void setFour(final String four) {
             this.four = four;
         }
     }
 
     public void testMapColumnToProperties() throws Exception {
-        String[] columnNames = { "test", "test", "three" };
-        String[] columnLabels = { "one", "two", null };
-        ResultSetMetaData rsmd = ProxyFactory.instance().createResultSetMetaData(
+        final String[] columnNames = { "test", "test", "three" };
+        final String[] columnLabels = { "one", "two", null };
+        final ResultSetMetaData rsmd = ProxyFactory.instance().createResultSetMetaData(
                 new MockResultSetMetaData(columnNames, columnLabels));
-        PropertyDescriptor[] props = Introspector.getBeanInfo(MapColumnToPropertiesBean.class).getPropertyDescriptors();
+        final PropertyDescriptor[] props = Introspector.getBeanInfo(MapColumnToPropertiesBean.class).getPropertyDescriptors();
 
-        int[] columns = beanProc.mapColumnsToProperties(rsmd, props);
+        final int[] columns = beanProc.mapColumnsToProperties(rsmd, props);
         for (int i = 1; i < columns.length; i++) {
             assertTrue(columns[i] != BeanProcessor.PROPERTY_NOT_FOUND);
         }
     }
 
     public void testMapColumnToPropertiesWithOverrides() throws Exception {
-        Map<String, String> columnToPropertyOverrides = new HashMap<String, String>();
+        final Map<String, String> columnToPropertyOverrides = new HashMap<>();
         columnToPropertyOverrides.put("five", "four");
-        BeanProcessor beanProc = new BeanProcessor(columnToPropertyOverrides);
-        String[] columnNames = { "test", "test", "three", "five" };
-        String[] columnLabels = { "one", "two", null, null };
-        ResultSetMetaData rsmd = ProxyFactory.instance().createResultSetMetaData(
+        final BeanProcessor beanProc = new BeanProcessor(columnToPropertyOverrides);
+        final String[] columnNames = { "test", "test", "three", "five" };
+        final String[] columnLabels = { "one", "two", null, null };
+        final ResultSetMetaData rsmd = ProxyFactory.instance().createResultSetMetaData(
                 new MockResultSetMetaData(columnNames, columnLabels));
-        PropertyDescriptor[] props = Introspector.getBeanInfo(MapColumnToPropertiesBean.class).getPropertyDescriptors();
+        final PropertyDescriptor[] props = Introspector.getBeanInfo(MapColumnToPropertiesBean.class).getPropertyDescriptors();
 
-        int[] columns = beanProc.mapColumnsToProperties(rsmd, props);
+        final int[] columns = beanProc.mapColumnsToProperties(rsmd, props);
         for (int i = 1; i < columns.length; i++) {
             assertTrue(columns[i] != BeanProcessor.PROPERTY_NOT_FOUND);
         }

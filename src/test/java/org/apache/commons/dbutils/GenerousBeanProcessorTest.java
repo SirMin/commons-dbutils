@@ -55,7 +55,7 @@ public class GenerousBeanProcessorTest {
         when(metaData.getColumnLabel(2)).thenReturn("one");
         when(metaData.getColumnLabel(3)).thenReturn("two");
 
-        int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
+        final int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
 
         assertNotNull(ret);
         assertEquals(4, ret.length);
@@ -74,7 +74,7 @@ public class GenerousBeanProcessorTest {
         when(metaData.getColumnLabel(2)).thenReturn("One");
         when(metaData.getColumnLabel(3)).thenReturn("tWO");
 
-        int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
+        final int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
 
         assertNotNull(ret);
         assertEquals(4, ret.length);
@@ -93,7 +93,7 @@ public class GenerousBeanProcessorTest {
         when(metaData.getColumnLabel(2)).thenReturn("o_n_e");
         when(metaData.getColumnLabel(3)).thenReturn("t_w_o");
 
-        int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
+        final int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
 
         assertNotNull(ret);
         assertEquals(4, ret.length);
@@ -113,7 +113,7 @@ public class GenerousBeanProcessorTest {
         when(metaData.getColumnLabel(2)).thenReturn("One");
         when(metaData.getColumnLabel(3)).thenReturn("tWO");
 
-        int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
+        final int[] ret = processor.mapColumnsToProperties(metaData, propDescriptors);
 
         assertNotNull(ret);
         assertEquals(2, ret.length);
@@ -132,7 +132,7 @@ public class GenerousBeanProcessorTest {
             return one;
         }
 
-        public void setOne(String one) {
+        public void setOne(final String one) {
             this.one = one;
         }
 
@@ -140,7 +140,7 @@ public class GenerousBeanProcessorTest {
             return two;
         }
 
-        public void setTwo(int two) {
+        public void setTwo(final int two) {
             this.two = two;
         }
 
@@ -148,7 +148,7 @@ public class GenerousBeanProcessorTest {
             return three;
         }
 
-        public void setThree(long three) {
+        public void setThree(final long three) {
             this.three = three;
         }
     }

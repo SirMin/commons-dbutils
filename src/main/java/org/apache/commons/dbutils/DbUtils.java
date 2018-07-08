@@ -55,7 +55,7 @@ public final class DbUtils {
      * @param conn Connection to close.
      * @throws SQLException if a database access error occurs
      */
-    public static void close(Connection conn) throws SQLException {
+    public static void close(final Connection conn) throws SQLException {
         if (conn != null) {
             conn.close();
         }
@@ -67,7 +67,7 @@ public final class DbUtils {
      * @param rs ResultSet to close.
      * @throws SQLException if a database access error occurs
      */
-    public static void close(ResultSet rs) throws SQLException {
+    public static void close(final ResultSet rs) throws SQLException {
         if (rs != null) {
             rs.close();
         }
@@ -79,7 +79,7 @@ public final class DbUtils {
      * @param stmt Statement to close.
      * @throws SQLException if a database access error occurs
      */
-    public static void close(Statement stmt) throws SQLException {
+    public static void close(final Statement stmt) throws SQLException {
         if (stmt != null) {
             stmt.close();
         }
@@ -91,10 +91,10 @@ public final class DbUtils {
      *
      * @param conn Connection to close.
      */
-    public static void closeQuietly(Connection conn) {
+    public static void closeQuietly(final Connection conn) {
         try {
             close(conn);
-        } catch (SQLException e) { // NOPMD
+        } catch (final SQLException e) { // NOPMD
             // quiet
         }
     }
@@ -108,8 +108,8 @@ public final class DbUtils {
      * @param stmt Statement to close.
      * @param rs ResultSet to close.
      */
-    public static void closeQuietly(Connection conn, Statement stmt,
-            ResultSet rs) {
+    public static void closeQuietly(final Connection conn, final Statement stmt,
+            final ResultSet rs) {
 
         try {
             closeQuietly(rs);
@@ -129,10 +129,10 @@ public final class DbUtils {
      *
      * @param rs ResultSet to close.
      */
-    public static void closeQuietly(ResultSet rs) {
+    public static void closeQuietly(final ResultSet rs) {
         try {
             close(rs);
-        } catch (SQLException e) { // NOPMD
+        } catch (final SQLException e) { // NOPMD
             // quiet
         }
     }
@@ -143,10 +143,10 @@ public final class DbUtils {
      *
      * @param stmt Statement to close.
      */
-    public static void closeQuietly(Statement stmt) {
+    public static void closeQuietly(final Statement stmt) {
         try {
             close(stmt);
-        } catch (SQLException e) { // NOPMD
+        } catch (final SQLException e) { // NOPMD
             // quiet
         }
     }
@@ -157,7 +157,7 @@ public final class DbUtils {
      * @param conn Connection to close.
      * @throws SQLException if a database access error occurs
      */
-    public static void commitAndClose(Connection conn) throws SQLException {
+    public static void commitAndClose(final Connection conn) throws SQLException {
         if (conn != null) {
             try {
                 conn.commit();
@@ -173,10 +173,10 @@ public final class DbUtils {
      *
      * @param conn Connection to close.
      */
-    public static void commitAndCloseQuietly(Connection conn) {
+    public static void commitAndCloseQuietly(final Connection conn) {
         try {
             commitAndClose(conn);
-        } catch (SQLException e) { // NOPMD
+        } catch (final SQLException e) { // NOPMD
             // quiet
         }
     }
@@ -188,7 +188,7 @@ public final class DbUtils {
      * @param driverClassName of driver to load
      * @return boolean <code>true</code> if the driver was found, otherwise <code>false</code>
      */
-    public static boolean loadDriver(String driverClassName) {
+    public static boolean loadDriver(final String driverClassName) {
         return loadDriver(DbUtils.class.getClassLoader(), driverClassName);
     }
 
@@ -201,35 +201,36 @@ public final class DbUtils {
      * @return boolean <code>true</code> if the driver was found, otherwise <code>false</code>
      * @since 1.4
      */
-    public static boolean loadDriver(ClassLoader classLoader, String driverClassName) {
+    public static boolean loadDriver(final ClassLoader classLoader, final String driverClassName) {
         try {
-            Class<?> loadedClass = classLoader.loadClass(driverClassName);
+            final Class<?> loadedClass = classLoader.loadClass(driverClassName);
 
             if (!Driver.class.isAssignableFrom(loadedClass)) {
                 return false;
             }
 
             @SuppressWarnings("unchecked") // guarded by previous check
+            final
             Class<Driver> driverClass = (Class<Driver>) loadedClass;
-            Constructor<Driver> driverConstructor = driverClass.getConstructor();
+            final Constructor<Driver> driverConstructor = driverClass.getConstructor();
 
             // make Constructor accessible if it is private
-            boolean isConstructorAccessible = driverConstructor.isAccessible();
+            final boolean isConstructorAccessible = driverConstructor.isAccessible();
             if (!isConstructorAccessible) {
                 driverConstructor.setAccessible(true);
             }
 
             try {
-                Driver driver = driverConstructor.newInstance();
+                final Driver driver = driverConstructor.newInstance();
                 registerDriver(new DriverProxy(driver));
             } finally {
                 driverConstructor.setAccessible(isConstructorAccessible);
             }
 
             return true;
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             return false;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return false;
         }
     }
@@ -239,7 +240,7 @@ public final class DbUtils {
      *
      * @param e SQLException to print stack trace of
      */
-    public static void printStackTrace(SQLException e) {
+    public static void printStackTrace(final SQLException e) {
         printStackTrace(e, new PrintWriter(System.err));
     }
 
@@ -250,7 +251,7 @@ public final class DbUtils {
      * @param e SQLException to print stack trace of
      * @param pw PrintWriter to print to
      */
-    public static void printStackTrace(SQLException e, PrintWriter pw) {
+    public static void printStackTrace(final SQLException e, final PrintWriter pw) {
 
         SQLException next = e;
         while (next != null) {
@@ -267,7 +268,7 @@ public final class DbUtils {
      *
      * @param conn Connection to print warnings from
      */
-    public static void printWarnings(Connection conn) {
+    public static void printWarnings(final Connection conn) {
         printWarnings(conn, new PrintWriter(System.err));
     }
 
@@ -277,11 +278,11 @@ public final class DbUtils {
      * @param conn Connection to print warnings from
      * @param pw PrintWriter to print to
      */
-    public static void printWarnings(Connection conn, PrintWriter pw) {
+    public static void printWarnings(final Connection conn, final PrintWriter pw) {
         if (conn != null) {
             try {
                 printStackTrace(conn.getWarnings(), pw);
-            } catch (SQLException e) {
+            } catch (final SQLException e) {
                 printStackTrace(e, pw);
             }
         }
@@ -292,7 +293,7 @@ public final class DbUtils {
      * @param conn Connection to rollback.  A null value is legal.
      * @throws SQLException if a database access error occurs
      */
-    public static void rollback(Connection conn) throws SQLException {
+    public static void rollback(final Connection conn) throws SQLException {
         if (conn != null) {
             conn.rollback();
         }
@@ -306,7 +307,7 @@ public final class DbUtils {
      * @throws SQLException if a database access error occurs
      * @since DbUtils 1.1
      */
-    public static void rollbackAndClose(Connection conn) throws SQLException {
+    public static void rollbackAndClose(final Connection conn) throws SQLException {
         if (conn != null) {
             try {
                 conn.rollback();
@@ -323,10 +324,10 @@ public final class DbUtils {
      * @param conn Connection to rollback.  A null value is legal.
      * @since DbUtils 1.1
      */
-    public static void rollbackAndCloseQuietly(Connection conn) {
+    public static void rollbackAndCloseQuietly(final Connection conn) {
         try {
             rollbackAndClose(conn);
-        } catch (SQLException e) { // NOPMD
+        } catch (final SQLException e) { // NOPMD
             // quiet
         }
     }
@@ -350,7 +351,7 @@ public final class DbUtils {
          *
          * @param adapted the adapted JDBC Driver loaded dynamically.
          */
-        public DriverProxy(Driver adapted) {
+        public DriverProxy(final Driver adapted) {
             this.adapted = adapted;
         }
 
@@ -358,7 +359,7 @@ public final class DbUtils {
          * {@inheritDoc}
          */
         @Override
-        public boolean acceptsURL(String url) throws SQLException {
+        public boolean acceptsURL(final String url) throws SQLException {
             return adapted.acceptsURL(url);
         }
 
@@ -366,7 +367,7 @@ public final class DbUtils {
          * {@inheritDoc}
          */
         @Override
-        public Connection connect(String url, Properties info) throws SQLException {
+        public Connection connect(final String url, final Properties info) throws SQLException {
             return adapted.connect(url, info);
         }
 
@@ -390,7 +391,7 @@ public final class DbUtils {
          * {@inheritDoc}
          */
         @Override
-        public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
+        public DriverPropertyInfo[] getPropertyInfo(final String url, final Properties info) throws SQLException {
             return adapted.getPropertyInfo(url, info);
         }
 
@@ -405,18 +406,19 @@ public final class DbUtils {
         /**
          * Java 1.7 method.
          */
+        @Override
         public Logger getParentLogger() throws SQLFeatureNotSupportedException {
             if (parentLoggerSupported) {
                 try {
-                    Method method = adapted.getClass().getMethod("getParentLogger", new Class[0]);
+                    final Method method = adapted.getClass().getMethod("getParentLogger", new Class[0]);
                     return (Logger)method.invoke(adapted, new Object[0]);
-                } catch (NoSuchMethodException e) {
+                } catch (final NoSuchMethodException e) {
                     parentLoggerSupported = false;
                     throw new SQLFeatureNotSupportedException(e);
-                } catch (IllegalAccessException e) {
+                } catch (final IllegalAccessException e) {
                     parentLoggerSupported = false;
                     throw new SQLFeatureNotSupportedException(e);
-                } catch (InvocationTargetException e) {
+                } catch (final InvocationTargetException e) {
                     parentLoggerSupported = false;
                     throw new SQLFeatureNotSupportedException(e);
                 }

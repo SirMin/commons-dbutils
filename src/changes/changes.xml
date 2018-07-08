@@ -48,6 +48,18 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" issue="DBUTILS-135" due-to="hdevalke">
         BeanProcessor is not thread safe since [DBUTILS-124].
       </action>
+      <action dev="ggregory" type="update" issue="DBUTILS-137" due-to="Gary Gregory">
+        Inefficient allocation of Maps in org.apache.commons.dbutils.BasicRowProcessor.toMap(ResultSet).
+      </action>
+      <action dev="ggregory" type="add" issue="DBUTILS-136" due-to="Matthew Hall, Gary Gregory">
+        CaseInsensitiveHashMap cannot be accessed by subclasses of BasicRowProcessor; add org.apache.commons.dbutils.BasicRowProcessor.createCaseInsensitiveHashMap(int).
+      </action>
+      <action dev="ggregory" type="fix" issue="DBUTILS-138" due-to="Stefano Lissa, Gary Gregory">
+        org.apache.commons.dbutils.QueryRunner.query(Connection, boolean, String, ResultSetHandler&lt;T>, Object...) Exception in closing statement leave connections open.
+      </action>
+      <action dev="ggregory" type="fix" issue="DBUTILS-139" due-to="Gary Gregory">
+        Update Java requirement from version 6 to 7.
+      </action>
     </release>
     
     <release version="1.7" date="2017-07-20" description="Bug fixes and separate column &amp; property handlers using SPI">
@@ -57,7 +69,7 @@ The <action> type attribute can be add,update,fix,remove.
         - handle SQLFeatureNotSupportedException
       </action>
       <action dev="britter" type="update" issue="DBUTILS-119" due-to="Michael Akerman">
-        Correct errors in BeanMapHandler JavaDoc
+        Correct errors in BeanMapHandler Javadoc
       </action>
       <action dev="thecarlhall" type="add" issue="DBUTILS-121">
         Add getWriteMethod to BeanProcessor to allow subclasses to influence which write method is used
@@ -113,7 +125,7 @@ The <action> type attribute can be add,update,fix,remove.
         Updated the use of getColumnName to try getColumnLabel first
       </action>
       <action dev="simonetripodi" due-to="Moandji Ezana" type="add" issue="DBUTILS-98">
-        Add missing JavaDoc to QueryRunner#insert
+        Add missing Javadoc to QueryRunner#insert
       </action>
       <action dev="simonetripodi" type="add" issue="DBUTILS-97">
         Add an Abstract ResultSetHandler implementation in order to reduce redundant 'resultSet' variable invocation

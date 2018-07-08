@@ -52,7 +52,7 @@ public class QueryLoader {
     /**
      * Maps query set names to Maps of their queries.
      */
-    private final Map<String, Map<String, String>> queries = new HashMap<String, Map<String, String>>();
+    private final Map<String, Map<String, String>> queries = new HashMap<>();
 
     /**
      * QueryLoader constructor.
@@ -80,7 +80,7 @@ public class QueryLoader {
      * @return Map of query names to SQL values
      * @see java.util.Properties
      */
-    public synchronized Map<String, String> load(String path) throws IOException {
+    public synchronized Map<String, String> load(final String path) throws IOException {
 
         Map<String, String> queryMap = this.queries.get(path);
 
@@ -108,28 +108,26 @@ public class QueryLoader {
      * @return Map of query names to SQL values
      * @see java.util.Properties
      */
-    protected Map<String, String> loadQueries(String path) throws IOException {
+    protected Map<String, String> loadQueries(final String path) throws IOException {
         // Findbugs flags getClass().getResource as a bad practice; maybe we should change the API?
-        InputStream in = getClass().getResourceAsStream(path);
+        final Properties props;
+        try (InputStream in = getClass().getResourceAsStream(path)) {
 
-        if (in == null) {
-            throw new IllegalArgumentException(path + " not found.");
-        }
-
-        Properties props = new Properties();
-        try {
+            if (in == null) {
+                throw new IllegalArgumentException(path + " not found.");
+            }
+            props = new Properties();
             if (dotXml.matcher(path).matches()) {
                 props.loadFromXML(in);
             } else {
                 props.load(in);
             }
-        } finally {
-            in.close();
         }
 
         // Copy to HashMap for better performance
 
-        @SuppressWarnings({ "rawtypes", "unchecked" }) // load() always creates <String,String> entries
+        @SuppressWarnings({"rawtypes", "unchecked" }) // load() always creates <String,String> entries
+        final
         HashMap<String, String> hashMap = new HashMap(props);
         return hashMap;
     }
@@ -138,7 +136,7 @@ public class QueryLoader {
      * Removes the queries for the given path from the cache.
      * @param path The path that the queries were loaded from.
      */
-    public synchronized void unload(String path) {
+    public synchronized void unload(final String path) {
         this.queries.remove(path);
     }
 

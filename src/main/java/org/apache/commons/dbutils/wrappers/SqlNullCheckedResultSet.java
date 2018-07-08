@@ -74,7 +74,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      * Maps normal method names (ie. "getBigDecimal") to the corresponding null
      * Method object (ie. getNullBigDecimal).
      */
-    private static final Map<String, Method> nullMethods = new HashMap<String, Method>();
+    private static final Map<String, Method> nullMethods = new HashMap<>();
 
     /**
      * The {@code getNull} string prefix.
@@ -83,13 +83,13 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
     private static final String GET_NULL_PREFIX = "getNull";
 
     static {
-        Method[] methods = SqlNullCheckedResultSet.class.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            String methodName = methods[i].getName();
+        final Method[] methods = SqlNullCheckedResultSet.class.getMethods();
+        for (Method method : methods) {
+            final String methodName = method.getName();
 
             if (methodName.startsWith(GET_NULL_PREFIX)) {
-                String normalName = "get" + methodName.substring(GET_NULL_PREFIX.length());
-                nullMethods.put(normalName, methods[i]);
+                final String normalName = "get" + methodName.substring(GET_NULL_PREFIX.length());
+                nullMethods.put(normalName, method);
             }
         }
     }
@@ -109,7 +109,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      * @param rs The <code>ResultSet</code> to wrap.
      * @return wrapped ResultSet
      */
-    public static ResultSet wrap(ResultSet rs) {
+    public static ResultSet wrap(final ResultSet rs) {
         return factory.createResultSet(new SqlNullCheckedResultSet(rs));
     }
 
@@ -146,7 +146,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      * to wrap the specified <code>ResultSet</code>.
      * @param rs ResultSet to wrap
      */
-    public SqlNullCheckedResultSet(ResultSet rs) {
+    public SqlNullCheckedResultSet(final ResultSet rs) {
         super();
         this.rs = rs;
     }
@@ -221,7 +221,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
         if (this.nullBytes == null) {
             return null;
         }
-        byte[] copy = new byte[this.nullBytes.length];
+        final byte[] copy = new byte[this.nullBytes.length];
         System.arraycopy(this.nullBytes, 0, copy, 0, this.nullBytes.length);
         return copy;
     }
@@ -379,12 +379,12 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      * @throws Throwable error
      */
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args)
+    public Object invoke(final Object proxy, final Method method, final Object[] args)
         throws Throwable {
 
-        Object result = method.invoke(this.rs, args);
+        final Object result = method.invoke(this.rs, args);
 
-        Method nullMethod = nullMethods.get(method.getName());
+        final Method nullMethod = nullMethods.get(method.getName());
 
         // Check nullMethod != null first so that we don't call wasNull()
         // before a true getter method was invoked on the ResultSet.
@@ -399,7 +399,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullAsciiStream the value
      */
-    public void setNullAsciiStream(InputStream nullAsciiStream) {
+    public void setNullAsciiStream(final InputStream nullAsciiStream) {
         this.nullAsciiStream = nullAsciiStream;
     }
 
@@ -409,7 +409,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullBigDecimal the value
      */
-    public void setNullBigDecimal(BigDecimal nullBigDecimal) {
+    public void setNullBigDecimal(final BigDecimal nullBigDecimal) {
         this.nullBigDecimal = nullBigDecimal;
     }
 
@@ -419,7 +419,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullBinaryStream the value
      */
-    public void setNullBinaryStream(InputStream nullBinaryStream) {
+    public void setNullBinaryStream(final InputStream nullBinaryStream) {
         this.nullBinaryStream = nullBinaryStream;
     }
 
@@ -429,7 +429,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullBlob the value
      */
-    public void setNullBlob(Blob nullBlob) {
+    public void setNullBlob(final Blob nullBlob) {
         this.nullBlob = nullBlob;
     }
 
@@ -439,7 +439,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullBoolean the value
      */
-    public void setNullBoolean(boolean nullBoolean) {
+    public void setNullBoolean(final boolean nullBoolean) {
         this.nullBoolean = nullBoolean;
     }
 
@@ -449,7 +449,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullByte the value
      */
-    public void setNullByte(byte nullByte) {
+    public void setNullByte(final byte nullByte) {
         this.nullByte = nullByte;
     }
 
@@ -459,8 +459,8 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullBytes the value
      */
-    public void setNullBytes(byte[] nullBytes) {
-        byte[] copy = new byte[nullBytes.length];
+    public void setNullBytes(final byte[] nullBytes) {
+        final byte[] copy = new byte[nullBytes.length];
         System.arraycopy(nullBytes, 0, copy, 0, nullBytes.length);
         this.nullBytes = copy;
     }
@@ -471,7 +471,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullCharacterStream the value
      */
-    public void setNullCharacterStream(Reader nullCharacterStream) {
+    public void setNullCharacterStream(final Reader nullCharacterStream) {
         this.nullCharacterStream = nullCharacterStream;
     }
 
@@ -481,7 +481,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullClob the value
      */
-    public void setNullClob(Clob nullClob) {
+    public void setNullClob(final Clob nullClob) {
         this.nullClob = nullClob;
     }
 
@@ -491,7 +491,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullDate the value
      */
-    public void setNullDate(Date nullDate) {
+    public void setNullDate(final Date nullDate) {
         this.nullDate = nullDate != null ? new Date(nullDate.getTime()) : null;
     }
 
@@ -501,7 +501,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullDouble the value
      */
-    public void setNullDouble(double nullDouble) {
+    public void setNullDouble(final double nullDouble) {
         this.nullDouble = nullDouble;
     }
 
@@ -511,7 +511,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullFloat the value
      */
-    public void setNullFloat(float nullFloat) {
+    public void setNullFloat(final float nullFloat) {
         this.nullFloat = nullFloat;
     }
 
@@ -521,7 +521,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullInt the value
      */
-    public void setNullInt(int nullInt) {
+    public void setNullInt(final int nullInt) {
         this.nullInt = nullInt;
     }
 
@@ -531,7 +531,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullLong the value
      */
-    public void setNullLong(long nullLong) {
+    public void setNullLong(final long nullLong) {
         this.nullLong = nullLong;
     }
 
@@ -541,7 +541,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullObject the value
      */
-    public void setNullObject(Object nullObject) {
+    public void setNullObject(final Object nullObject) {
         this.nullObject = nullObject;
     }
 
@@ -551,7 +551,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullRef the value
      */
-    public void setNullRef(Ref nullRef) {
+    public void setNullRef(final Ref nullRef) {
         this.nullRef = nullRef;
     }
 
@@ -561,7 +561,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullShort the value
      */
-    public void setNullShort(short nullShort) {
+    public void setNullShort(final short nullShort) {
         this.nullShort = nullShort;
     }
 
@@ -571,7 +571,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullString the value
      */
-    public void setNullString(String nullString) {
+    public void setNullString(final String nullString) {
         this.nullString = nullString;
     }
 
@@ -581,7 +581,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullTime the value
      */
-    public void setNullTime(Time nullTime) {
+    public void setNullTime(final Time nullTime) {
         this.nullTime = nullTime;
     }
 
@@ -591,7 +591,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullTimestamp the value
      */
-    public void setNullTimestamp(Timestamp nullTimestamp) {
+    public void setNullTimestamp(final Timestamp nullTimestamp) {
         this.nullTimestamp = nullTimestamp != null ? new Timestamp(nullTimestamp.getTime()) : null;
     }
 
@@ -601,7 +601,7 @@ public class SqlNullCheckedResultSet implements InvocationHandler {
      *
      * @param nullURL the value
      */
-    public void setNullURL(URL nullURL) {
+    public void setNullURL(final URL nullURL) {
         this.nullURL = nullURL;
     }
 

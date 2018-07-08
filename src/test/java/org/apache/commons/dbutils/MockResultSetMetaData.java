@@ -39,19 +39,19 @@ public class MockResultSetMetaData implements InvocationHandler {
      * @param columnNames
      * @return the proxy object
      */
-    public static ResultSetMetaData create(String[] columnNames) {
+    public static ResultSetMetaData create(final String[] columnNames) {
         return ProxyFactory.instance().createResultSetMetaData(
             new MockResultSetMetaData(columnNames));
     }
 
-    public MockResultSetMetaData(String[] columnNames) {
+    public MockResultSetMetaData(final String[] columnNames) {
         super();
         this.columnNames = columnNames;
         this.columnLabels = new String[columnNames.length];
 
     }
 
-    public MockResultSetMetaData(String[] columnNames, String[] columnLabels) {
+    public MockResultSetMetaData(final String[] columnNames, final String[] columnLabels) {
         super();
         this.columnNames = columnNames;
         this.columnLabels = columnLabels;
@@ -59,10 +59,10 @@ public class MockResultSetMetaData implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args)
+    public Object invoke(final Object proxy, final Method method, final Object[] args)
         throws Throwable {
 
-        String methodName = method.getName();
+        final String methodName = method.getName();
 
         if (methodName.equals("getColumnCount")) {
             return Integer.valueOf(this.columnNames.length);
@@ -70,13 +70,13 @@ public class MockResultSetMetaData implements InvocationHandler {
         } else if (
                 methodName.equals("getColumnName")) {
 
-                int col = ((Integer) args[0]).intValue() - 1;
+                final int col = ((Integer) args[0]).intValue() - 1;
                 return this.columnNames[col];
 
         } else if (
                 methodName.equals("getColumnLabel")) {
 
-                int col = ((Integer) args[0]).intValue() - 1;
+                final int col = ((Integer) args[0]).intValue() - 1;
                 return this.columnLabels[col];
 
         } else if (methodName.equals("hashCode")) {
